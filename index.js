@@ -7,8 +7,10 @@ function MyArray() {
     this.push(arguments[i]);
   }
 }
-//MyArray.prototype = new MyArrayProto();
+MyArray.prototype = new MyArrayProto();
 
+
+function MyArrayProto() {
 /*Реализовать следующие методы функции конструктора:
 MyArray.isMyArray();  // подсказка: instanceof */
 MyArray.isMyArray = function (obj) {
@@ -43,9 +45,9 @@ this.unshift = function unshift(...args) {
     this[i + 1] = this[i];
   }
   for(let i = 0; i < args.length; i++) {
-   this[i] = args[i];
+   this[i] = args[i - args.length];
   }
-  return args.length;
+  return this.length += args.length;
 };
 
 /*MyArray.prototype.shift();*/
@@ -104,3 +106,5 @@ this.map = function map(cb) {
   }
   return result;
 };
+
+}
