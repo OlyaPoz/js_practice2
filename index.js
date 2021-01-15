@@ -1,46 +1,105 @@
 'use strict';
 
 /*Реализовать функцию конструктор MyArray.*/
-function MyArray(){};
-MyArray.prototype = new Array();
+function MyArray() {
+  this.length = 0;
+  for (let i = 0; i < arguments.length; i++) {
+    this.push(arguments[i]);
+  }
+}
+//MyArray.prototype = new MyArrayProto();
 
 /*Реализовать следующие методы функции конструктора:
 MyArray.isMyArray();  // подсказка: instanceof */
-const testArr = [1, 2, 3];
-const arr = new MyArray();
-console.log(arr instanceof MyArray);
+MyArray.isMyArray = function (obj) {
+  return obj instanceof MyArray;
+};
 
 /*Реализовать прототип для создаваемых коллекций, 
 со следующими методами:
 MyArray.prototype.push(); */ 
-testArr.push(4);
-console.log(testArr);
+this.push = function push() {
+  for (let i = 0; i < arguments.length; i++) {
+    this[this.length] = arguments[i];
+    ++this.length;
+  }
+  return this.length;
+};
 
 /*MyArray.prototype.pop(); // tip: delete */
-testArr.pop();
-console.log(testArr);
+this.pop = function pop() {
+  if (this.length <= 0) {
+    return;
+  }
+  const lastItem = this[this.length - 1];
+  delete this[--this.length];
+  return lastItem;
+};
+
 
 /*MyArray.prototype.unshift();*/
-testArr.unshift(0);
-console.log(testArr);
+this.unshift = function unshift(item) {
+  for (let i = this.length; i > 0; i--) {
+    this[i + 1] = this[i];
+  }
+  this[0] = item;
+  ++this.length;
+  return this.length;
+};
 
-/*MyArray.prototype.shift(); */
-testArr.shift();
-console.log(testArr);
+/*MyArray.prototype.shift();*/
+
+this.shift = function shift() {
+  if (this.length > 0){
+  const firstItem = this[0];
+  delete this[0];
+  for(let i = 0; i < this.length; i++){
+  this[i + 1] = this[i];
+  }
+  delete this[--this.length];
+  return firstItem;
+  }
+}; 
 
 /* MyArray.prototype.concat();*/
-const test = testArr.concat(4, 5, 6);
-console.log(test);
+this.concat = function concat(myArrayInstance) {
+  const result = new MyArray();
+
+  for (let i = 0; i < this.length; i++) {
+    result.push(this[i]);
+  }
+
+  for (let i = 0; i < myArrayInstance.length; i++) {
+    result.push(myArrayInstance[i]);
+  }
+
+  return result;
+};
 
 /*MyArray.prototype.reverse(); */
-const test1 = test.reverse();
-console.log(test1);
+this.reverse = function reverse() {
+  const copy = new MyArray();
+  for (let i = 0; i < this.length; i++) {
+    copy.push(this[i]);
+  }
+  for (let i = 0; i < this.length; i++) {
+    this[i] = copy.pop();
+  }
+  return this
+};
 
 /*MyArray.prototype.forEach(); */
-let sum = null;
-testArr.forEach(element => sum += element);
-console.log(sum);
+this.forEach = function forEach(cb) {
+  for (let i = 0; i < this.length; i++) {
+    cb(this[i], i, this);
+  }
+};
 
 /*MyArray.prototype.map(); */
-let res = testArr.map(element => element * 2);
-console.log(res);
+this.map = function map(cb) {
+  const result = new MyArray();
+  for (let i = 0; i < this.length; i++) {
+    result.push(cb(this[i], i, this));
+  }
+  return result;
+};
