@@ -42,9 +42,10 @@ this.unshift = function unshift(item) {
   for (let i = this.length; i > 0; i--) {
     this[i + 1] = this[i];
   }
-  this[0] = item;
-  ++this.length;
-  return this.length;
+  for(let i = 0; i < item.length; i++) {
+   this[i] = item[i];
+  }
+  return item.length;
 };
 
 /*MyArray.prototype.shift();*/
@@ -54,7 +55,7 @@ this.shift = function shift() {
   const firstItem = this[0];
   delete this[0];
   for(let i = 0; i < this.length; i++){
-  this[i + 1] = this[i];
+    this[i] = this[i + 1];
   }
   delete this[--this.length];
   return firstItem;
