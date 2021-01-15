@@ -38,14 +38,14 @@ this.pop = function pop() {
 
 
 /*MyArray.prototype.unshift();*/
-this.unshift = function unshift(item) {
-  for (let i = this.length; i > 0; i--) {
+this.unshift = function unshift(...args) {
+  for (let i = (this.length + args.length - 1); i >= args.length; i--) {
     this[i + 1] = this[i];
   }
-  for(let i = 0; i < item.length; i++) {
-   this[i] = item[i];
+  for(let i = 0; i < args.length; i++) {
+   this[i] = args[i];
   }
-  return item.length;
+  return args.length;
 };
 
 /*MyArray.prototype.shift();*/
